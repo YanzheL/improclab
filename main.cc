@@ -139,94 +139,70 @@ void lab2() {
   int n_channels;
   imread("../ExperimentImage/灰度/BMP/boats.bmp", img_data, rows, cols, n_channels, true);
   imshow("Original", img_data, rows, cols, n_channels);
-  // 分配内存准备输出
-  auto processed_img = new unsigned char[rows * cols]; // 存放每次恢复到0~255的单通道数据
-  int orig_histo[HISTO_LEN]; // 原始直方图
-  float orig_regu_histo[HISTO_LEN]; // 原始正规直方图
-  int processed_histo[HISTO_LEN]; // 处理之后的直方图
-  float processed_regu_histo[HISTO_LEN]; // 处理之后的正规直方图
-  int trans_map[HISTO_LEN]; // 灰度映射函数
 
-  histo(img_data, orig_histo, rows * cols);
-  cout << "-------------------- Original --------------------" << endl;
-  plot1d("Original Histogram", orig_histo, HISTO_LEN);
-  scalar_mul(orig_histo, orig_regu_histo, 1.0 / (rows * cols), HISTO_LEN);
+  // 分配内存
+  auto img_res = new unsigned char[rows * cols]; // 存放每次恢复到0~255的单通道数据
+  int histo_orig[HISTO_LEN];                     // 原始直方图
+  float histo_orig_regu[HISTO_LEN];              // 原始正规直方图
+  int histo_res[HISTO_LEN];                      // 处理之后的直方图
+  float histo_reg_regu[HISTO_LEN];               // 处理之后的正规直方图
+  int trans_map[HISTO_LEN];                      // 灰度映射函数
+
+  // 计算原始图像直方图
+  histo(img_data, histo_orig, rows * cols);
+  // 显示原始直方图
+  plot1d("Original Histogram", histo_orig, HISTO_LEN);
+  // 正规化
+  scalar_mul(histo_orig, histo_orig_regu, 1.0 / (rows * cols), HISTO_LEN);
 
   // -------------------- 均衡化 --------------------
-  histo_equa(orig_regu_histo, trans_map, processed_regu_histo, HISTO_LEN);
-  scalar_mul(processed_regu_histo, processed_histo, rows * cols, HISTO_LEN);
-  plot1d("Equalized Histogram", processed_histo, HISTO_LEN);
+  // 调用直方图均衡化函数
+  histo_equa(histo_orig_regu, trans_map, histo_reg_regu, HISTO_LEN);
+  // 把得到的均衡化后的正规直方图恢复到0～255范围
+  scalar_mul(histo_reg_regu, histo_res, rows * cols, HISTO_LEN);
+  // 显示均衡化后的直方图
+  plot1d("Equalized Histogram", histo_res, HISTO_LEN);
+  // 显示均衡化使用的灰度级映射函数
   plot1d("Equalization Mapping Function", trans_map, HISTO_LEN);
-  apply_trans(img_data, processed_img, trans_map, rows * cols);
-  imshow("Equalization_Result", processed_img, rows, cols, 1);
+  // 对原图应用灰度级映射函数存到新的图片并显示
+  apply_trans(img_data, img_res, trans_map, rows * cols);
+  imshow("Equalization_Result", img_res, rows, cols, 1);
   // -----------------------------------------------
 
   // -------------------- 规定化 --------------------
-  float target_regu_histo[HISTO_LEN]; // 目标正规直方图
-  normal_seq(target_regu_histo, HISTO_LEN); // 随机生成一个成正态分布的曲线作为目标正规直方图
-  int target_histo[HISTO_LEN]; // 存储目标直方图
+  // 目标正规直方图
+  float target_regu_histo[HISTO_LEN];
+  // 随机生成一个成正态分布的曲线作为目标正规直方图
+  normal_seq(target_regu_histo, HISTO_LEN);
+  // 存储目标直方图
+  int target_histo[HISTO_LEN];
   scalar_mul(target_regu_histo, target_histo, rows * cols, HISTO_LEN);
+  // 显示
   plot1d("Target Histogram", target_histo, HISTO_LEN);
-  // 直方图规定化
-  histo_spec(orig_regu_histo, target_regu_histo, trans_map, processed_regu_histo, HISTO_LEN);
-  scalar_mul(processed_regu_histo, processed_histo, rows * cols, HISTO_LEN);
-  plot1d("Specified Histogram", processed_histo, HISTO_LEN);
+  // 调用直方图规定化函数
+  histo_spec(histo_orig_regu, target_regu_histo, trans_map, histo_reg_regu, HISTO_LEN);
+  // 把得到的规定化后的正规直方图恢复到0～255范围
+  scalar_mul(histo_reg_regu, histo_res, rows * cols, HISTO_LEN);
+  // 显示规定化后的直方图
+  plot1d("Specified Histogram", histo_res, HISTO_LEN);
+  // 显示规定化使用的灰度级映射函数
   plot1d("Specification Mapping Function", trans_map, HISTO_LEN);
-  apply_trans(img_data, processed_img, trans_map, rows * cols);
-  imshow("Specification_Result", processed_img, rows, cols, 1);
+  // 对原图应用灰度级映射函数存到新的图片并显示
+  apply_trans(img_data, img_res, trans_map, rows * cols);
+  imshow("Specification_Result", img_res, rows, cols, 1);
   // -----------------------------------------------
 
-
   // 释放预分配内存
-  delete[] processed_img;
+  delete[] img_res;
   delete[] img_data;
-}
-
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include <iostream>
-using namespace std;
-using namespace cv;
-
-int test() {
-  Mat src = imread("../ExperimentImage/灰度/BMP/boats.bmp", IMREAD_COLOR);
-  if (src.empty()) {
-    return -1;
-  }
-  vector<Mat> bgr_planes;
-  split(src, bgr_planes);
-  int histSize = 256;
-  float range[] = {0, 256}; //the upper boundary is exclusive
-  const float *histRange = {range};
-  bool uniform = true, accumulate = false;
-  Mat b_hist;
-  calcHist(&bgr_planes[0], 1, 0, Mat(), b_hist, 1, &histSize, &histRange, uniform, accumulate);
-//  std::cout<<b_hist.at<int>(1);
-  std::cout << b_hist.type();
-  std::cout << b_hist << std::endl;
-  int hist_w = 512, hist_h = 400;
-  int bin_w = cvRound((double) hist_w / histSize);
-  Mat histImage(hist_h, hist_w, CV_8UC3, Scalar(0, 0, 0));
-  normalize(b_hist, b_hist, 0, histImage.rows, NORM_MINMAX, -1, Mat());
-  for (int i = 1; i < histSize; i++) {
-    line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(b_hist.at<float>(i - 1))),
-         Point(bin_w * (i), hist_h - cvRound(b_hist.at<float>(i))),
-         Scalar(255, 0, 0), 2, 8, 0);
-  }
-  imshow("Source image", src);
-  imshow("calcHist Demo", histImage);
-  waitKey();
-  return 0;
 }
 
 int main() {
 //  lab1();
-//  waitKey(0);
 //  test_histo_equa();
 //  test_histo_spec();
 //  lab1();
   lab2();
-//test();
+//  waitKey(0);
   return 0;
 }

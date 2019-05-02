@@ -45,10 +45,8 @@ inline void value_mapping(const float *src, float *dst, const int *mapping, cons
  */
 inline void histo(const unsigned char *src, int *dst, int n, int hlen = 256) {
   zero_fill(dst, hlen);
-  for (int i = 0; i < n; ++i) {
-    unsigned val = src[i];
-    ++dst[val];
-  }
+  for (int i = 0; i < n; ++i)
+    ++dst[src[i]];
 }
 
 /**
@@ -88,7 +86,6 @@ inline void histo_spec(const float *src_histo_regu,
                        int *dst_mapping,
                        float *dst_histo_regu,
                        const size_t n) {
-//  int *msrc = new int[n]; // 存储 f->g 映射
   int msrc[n]; // 存储 f->g 映射
   int mtarget[n]; // 存储 z->y 映射
   histo_mapping(src_histo_regu, msrc, n); // 计算f->g
@@ -104,8 +101,6 @@ inline void histo_spec(const float *src_histo_regu,
   }
   // 将P(f)概率序列根据映射 f->z 映射到结果概率序列P(z)
   value_mapping(src_histo_regu, dst_histo_regu, dst_mapping, n);
-//  delete[] msrc;
-//  delete[] mtarget;
 }
 
 }

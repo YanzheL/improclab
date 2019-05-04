@@ -3,14 +3,14 @@
 // Author: LI YANZHE <lee.yanzhe@yanzhe.org>
 // Created by LI YANZHE on 5/1/19.
 // =======================================================================
-#ifndef IMPROCLAB_IMGIO_H
-#define IMPROCLAB_IMGIO_H
+#ifndef IMPROCLAB_IO_H
+#define IMPROCLAB_IO_H
 
 #include <string>
 namespace lyz {
 
 /**
- * 读取RAW图像
+ * 读取图像
  * @param path 文件路径
  * @param dst 输出图像内容
  * @param rows 输出图像长
@@ -27,10 +27,24 @@ void imread(const std::string path, unsigned char *&dst, int &rows, int &cols, i
  */
 void imshow(const std::string name, const unsigned char *src, int rows, int cols, unsigned int channels);
 
+/**
+ * 把图片写入文件
+ * @param path
+ * @param src
+ * @param rows
+ * @param cols
+ * @param channels
+ */
 void imwrite(const std::string path, const unsigned char *src, int rows, int cols, int channels);
 
-void plot1d(const std::string name, const int *histo, int hlen);
+/**
+ * 把一维数组作为直方图显示
+ * @param name 窗口名称
+ * @param src 输入数组
+ * @param n 数组长度
+ */
+void plot1d(const std::string name, const int *src, int n);
 
 }
 
-#endif //IMPROCLAB_IMGIO_H
+#endif //IMPROCLAB_IO_H

@@ -2,7 +2,7 @@
 #include "imgproc.h"
 #include "color_convert.h"
 #include "histogram.h"
-#include "imgio.h"
+#include "io.h"
 #include "filter.h"
 #include "benchmark.h"
 

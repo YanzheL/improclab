@@ -16,8 +16,8 @@ add_executable(
         improclab
         main.cc
         imgproc.h
-        imgio.cc
-        imgio.h
+        io.cc
+        io.h
         color_convert.h
         histogram.h
         filter.h

@@ -3,7 +3,7 @@
 // Author: LI YANZHE <lee.yanzhe@yanzhe.org>
 // Created by LI YANZHE on 5/1/19.
 // =======================================================================
-#include "imgio.h"
+#include "io.h"
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <fstream>
@@ -51,16 +51,16 @@ void lyz::imshow(const string name, const unsigned char *src, int rows, int cols
   cv::waitKey();
 }
 
-void lyz::plot1d(const string name, const int *histo, int hlen = 256) {
+void lyz::plot1d(const string name, const int *src, int n = 256) {
   constexpr int hist_w = 2048;
   constexpr int hist_h = 1024;
-  const int bin_w = ROUND((double) hist_w / (2 * hlen));
+  const int bin_w = ROUND((double) hist_w / (2 * n));
   cv::Mat histImage(hist_h, hist_w, CV_8UC3, cv::Scalar(255, 255, 255));
-  cv::Mat mhist = cv::Mat::zeros(hlen, 1, CV_32F);
-  for (int i = 0; i < hlen; ++i)
-    mhist.at<float>(i) = histo[i];
+  cv::Mat mhist = cv::Mat::zeros(n, 1, CV_32F);
+  for (int i = 0; i < n; ++i)
+    mhist.at<float>(i) = src[i];
   normalize(mhist, mhist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat());
-  for (int bin = 0; bin < hlen; ++bin) {
+  for (int bin = 0; bin < n; ++bin) {
     int start = bin * bin_w * 2;
     line(
         histImage,

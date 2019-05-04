@@ -210,6 +210,7 @@ void lab3_1(std::string path) {
 
   // 分配内存
   auto img_res = new unsigned char[rows * cols];
+  std::memset(img_res, 0, rows * cols * sizeof(unsigned char));
 
   // -------------------- 普通中值滤波 --------------------
   GETTIME_HIGH(median_filter_slow(img_data, img_res, rows, cols, 3);, Slow_Median_Filter_3)
@@ -247,6 +248,7 @@ void lab3_2(std::string path) {
 
   // 分配内存
   auto img_res = new unsigned char[rows * cols];
+  std::memset(img_res, 0, rows * cols * sizeof(unsigned char));
 
   // -------------------- 普通均值滤波 --------------------
   GETTIME_HIGH(mean_filter_slow(img_data, img_res, rows, cols, 3);, Slow_Mean_Filter_3)

@@ -53,9 +53,9 @@ void lab1(std::string path) {
   auto regularized_rgb = new float[rows * cols * n_channels];
   regularize(img_data, regularized_rgb, rows * cols * n_channels);
   // 分配内存准备输出
-  auto recovered_img = new unsigned char[rows * cols]; // 存放每次恢复到0~255的单通道数据
+  auto recovered_img = new unsigned char[rows * cols];    // 存放每次恢复到0~255的单通道数据
   auto output_channels = alloc_2d<float>(3, rows * cols); // 存放每次处理完后的三个通道
-  auto merged = new float[rows * cols * n_channels]; // 存放三通道合并后的数据
+  auto merged = new float[rows * cols * n_channels];      // 存放三通道合并后的数据
 
   // -------------------- RGB转灰度图 --------------------
   rgb2grey(regularized_rgb, rows, cols, *output_channels);
@@ -210,6 +210,7 @@ void lab3_1(std::string path) {
 
   // 分配内存
   auto img_res = new unsigned char[rows * cols];
+
   // -------------------- 普通中值滤波 --------------------
   GETTIME_HIGH(median_filter_slow(img_data, img_res, rows, cols, 3);, Slow_Median_Filter_3)
   imshow("Lab3_1_Slow_Median_Filter_3x3_Result", img_res, rows, cols, 1);
@@ -282,8 +283,8 @@ void lab3_3(std::string path) {
   imshow("Lab3_3_Original", img_data, rows, cols, n_channels);
 
   // 分配内存
-  auto img_regu = new float[rows * cols]; // 存储原图像的float类型数据
-  auto img_res = new float[rows * cols]; // 存储每次处理完的图像数据
+  auto img_regu = new float[rows * cols];         // 存储原图像的float类型数据
+  auto img_res = new float[rows * cols];          // 存储每次处理完的图像数据
   auto img_view = new unsigned char[rows * cols]; // 存储用于显示图像的unsigned char 8位数据
 
   // 预处理

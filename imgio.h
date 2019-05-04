@@ -16,7 +16,7 @@ namespace lyz {
  * @param rows 输出图像长
  * @param cols 输出图像宽
  */
-void imread(const std::string &&path, unsigned char *&dst, int &rows, int &cols, int &channels, bool is_grey);
+void imread(const std::string path, unsigned char *&dst, int &rows, int &cols, int &channels, bool is_grey);
 
 /**
  * 显示图片
@@ -25,11 +25,11 @@ void imread(const std::string &&path, unsigned char *&dst, int &rows, int &cols,
  * @param rows 图像长
  * @param cols 图像宽
  */
-void imshow(const std::string &&name, const unsigned char *src, int rows, int cols, unsigned int channels);
+void imshow(const std::string name, const unsigned char *src, int rows, int cols, unsigned int channels);
 
-void imwrite(const std::string &&path, const unsigned char *src, int rows, int cols, int channels);
+void imwrite(const std::string path, const unsigned char *src, int rows, int cols, int channels);
 
-void plot1d(const std::string &&name, const int *histo, int hlen);
+void plot1d(const std::string name, const int *histo, int hlen);
 
 }
 

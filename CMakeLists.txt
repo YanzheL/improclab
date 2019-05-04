@@ -19,6 +19,9 @@ add_executable(
         imgio.cc
         imgio.h
         color_convert.h
-        histogram.h)
+        histogram.h
+        filter.h
+        benchmark.h
+)
 
 target_link_libraries(improclab ${OpenCV_LIBRARIES})

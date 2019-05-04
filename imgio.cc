@@ -25,11 +25,11 @@ inline cv::Mat toMat(const unsigned char *src, int rows, int cols, int channels)
   return {rows, cols, type, (void *) bgr};
 }
 
-void lyz::imwrite(const std::string &&path, const unsigned char *src, int rows, int cols, int channels) {
+void lyz::imwrite(const string path, const unsigned char *src, int rows, int cols, int channels) {
   cv::imwrite(path, toMat(src, rows, cols, channels));
 }
 
-void lyz::imread(const std::string &&path,
+void lyz::imread(const string path,
                  unsigned char *&dst,
                  int &rows,
                  int &cols,
@@ -45,13 +45,13 @@ void lyz::imread(const std::string &&path,
   reverse_channels(img.data, dst, rows, cols, channels); //RGB
 }
 
-void lyz::imshow(const string &&name, const unsigned char *src, int rows, int cols, unsigned int channels) {
+void lyz::imshow(const string name, const unsigned char *src, int rows, int cols, unsigned int channels) {
   cv::imshow(name, toMat(src, rows, cols, channels));
   imwrite("../output/" + name + ".png ", src, rows, cols, channels);
   cv::waitKey();
 }
 
-void lyz::plot1d(const std::string &&name, const int *histo, int hlen = 256) {
+void lyz::plot1d(const string name, const int *histo, int hlen = 256) {
   constexpr int hist_w = 2048;
   constexpr int hist_h = 1024;
   const int bin_w = ROUND((double) hist_w / (2 * hlen));
@@ -73,5 +73,6 @@ void lyz::plot1d(const std::string &&name, const int *histo, int hlen = 256) {
     );
   }
   cv::imshow(name, histImage);
+  cv::imwrite("../output/" + name + ".png ", histImage);
   cv::waitKey();
 }

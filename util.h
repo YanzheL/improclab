@@ -7,9 +7,8 @@
 #define IMPROCLAB_UTIL_H
 
 #include <random>
-#include <initializer_list>
-
-//#define IDX(x, y, z, WIDTH, DEPTH) ((x) + WIDTH * ((y) + DEPTH * (z)))
+#include <iostream>
+#include <array>
 //#define IDX_2D(i, j, WIDTH) ((i) * WIDTH + (j))
 //#define IDX_3D(i, j, k, WIDTH, DEPTH) (IDX(i, j, WIDTH) * DEPTH + k)
 #define MIN(x, y) ((x) <= (y) ? (x) : (y))
@@ -69,12 +68,25 @@ inline int argmin_abs(T x, const T *src, int n) {
   return idx;
 }
 
+/**
+ * 序列乘以标量
+ * @param src 输入序列
+ * @param dst 输出序列
+ * @param factor 乘法因子
+ * @param n 序列长度
+ */
 template<typename T1, typename T2>
 inline void scalar_mul(const T1 *src, T2 *dst, double factor, int n) {
   for (int i = 0; i < n; ++i)
     dst[i] = src[i] * factor;
 }
 
+/**
+ * 分配二维内存
+ * @param m 行数
+ * @param n 列数
+ * @return 分配后的二级指针
+ */
 template<typename T>
 inline T **alloc_2d(int m, int n) {
   T **mat = new T *[m];
@@ -83,6 +95,11 @@ inline T **alloc_2d(int m, int n) {
   return mat;
 }
 
+/**
+ * 释放二级指针
+ * @param mat 目标二级指针
+ * @param m 行数
+ */
 template<typename T>
 inline void delete_2d(T **mat, int m) {
   for (int i = 0; i < m; ++i)
@@ -93,17 +110,8 @@ inline void delete_2d(T **mat, int m) {
 template<typename T>
 inline void print_mat(const T *src, int n) {
   for (int i = 0; i < n; ++i)
-    std::cout << src[i] << "\t";
+    std::cout << (float) src[i] << "\t";
   std::cout << std::endl;
-}
-
-inline constexpr int nd_idx(std::initializer_list<int> shape, std::initializer_list<int> indices) {
-  int res = 0;
-  const auto sbegin = shape.begin();
-  const auto ibegin = indices.begin();
-  for (int dim = 0; dim < shape.size(); ++dim)
-    res += res * sbegin[dim] + ibegin[dim];
-  return res;
 }
 
 /**
@@ -116,8 +124,9 @@ inline constexpr int nd_idx(std::initializer_list<int> shape, std::initializer_l
  */
 template<typename ...Args>
 inline constexpr size_t IDX(const Args... params) {
-  constexpr size_t NDIMS = sizeof...(params) / 2 + 1;
-  std::initializer_list<int> args{params...};
+  constexpr size_t N = sizeof...(Args);
+  constexpr size_t NDIMS = N / 2 + 1;
+  std::array<int, N> args{params...};
   auto ibegin = args.begin();
   auto sbegin = ibegin + NDIMS;
   size_t res = 0;

@@ -21,7 +21,7 @@ namespace lyz {
  * @param n3
  */
 template<typename T1, typename T2, typename T3>
-inline void matmul(const T1 *a, T2 *b, T3 *c, int n1, int n2, int n3) {
+inline void mat_mul(const T1 *a, T2 *b, T3 *c, int n1, int n2, int n3) {
   int i, j, k;
   for (i = 0; i < n1; ++i)
     for (j = 0; j < n3; ++j) {
@@ -33,7 +33,7 @@ inline void matmul(const T1 *a, T2 *b, T3 *c, int n1, int n2, int n3) {
 }
 
 template<typename T1, typename T2, typename T3>
-inline void matmul(const T1 *a, T2 **b, T3 **c, int n1, int n2, int n3) {
+inline void mat_mul(const T1 *a, T2 **b, T3 **c, int n1, int n2, int n3) {
   int i, j, k;
   for (i = 0; i < n1; ++i)
     for (j = 0; j < n3; ++j) {
@@ -42,6 +42,40 @@ inline void matmul(const T1 *a, T2 **b, T3 **c, int n1, int n2, int n3) {
         tp += a[i * n1 + k] * b[k][j];
       c[i][j] = tp;
     }
+}
+
+/**
+ * 两个矩阵对应元素相乘
+ * @param a 输入A矩阵起始地址
+ * @param b 输入B矩阵起始地址
+ * @param c 输出B矩阵起始地址
+ * @param rows 当前乘法窗口行数
+ * @param cols 当前乘法窗口列数
+ * @param w_a A矩阵在内存中线性表示的原始宽度
+ * @param w_b B矩阵在内存中线性表示的原始宽度
+ * @param w_c C矩阵在内存中线性表示的原始宽度
+ */
+template<typename T1, typename T2, typename T3>
+inline
+void mat_dotmul_scope(const T1 *a,
+                      const T2 *b,
+                      T3 *c,
+                      int rows,
+                      int cols,
+                      int w_a,
+                      int w_b,
+                      int w_c) {
+  for (int i = 0; i < rows; ++i)
+    for (int j = 0; j < cols; ++j)
+      c[i * w_c + j] = a[i * w_a + j] * b[i * w_b + j];
+}
+
+template<typename T>
+inline float sequence_sum(const T *src, int n) {
+  float sum = 0;
+  for (int i = 0; i < n; ++i)
+    sum += src[i];
+  return sum;
 }
 
 /**
@@ -75,10 +109,10 @@ inline void merge(T **src, T *dst, int rows, int cols) {
 }
 
 /**
- * 对输入序列正规化, 负责把输入序列数值范围映射到 [range_min, range_max]
+ * 将输入序列映射到指定的[range_min, range_max]范围
  * @param src 输入原始数组, 各元素需非负
- * @param dst 输出正规化后的数组, len = cols
- * @param n 数组长度
+ * @param dst 输出映射后的序列
+ * @param n 序列长度
  */
 template<typename T_IN, typename T_OUT>
 inline void regularize(const T_IN *src, T_OUT *dst, int n, T_OUT range_min = 0.0, T_OUT range_max = 1.0) {
@@ -106,6 +140,13 @@ inline void regularize(const T_IN *src, T_OUT *dst, int n, T_OUT range_min = 0.0
 //  }
 //}
 
+/**
+ * 给出长度为n的正态分布序列
+ * @param dst 输出数组
+ * @param n 长度
+ * @param stdev_factor 标准差分母
+ * @param ntests 随即样本数, 样本越多, 输出的曲线越接近标准正态分布
+ */
 inline void normal_seq(float *dst, int n, float stdev_factor = 5.0, int ntests = 1000) {
   static std::default_random_engine generator;
   static std::normal_distribution<float> distribution(n / 2.0, n / stdev_factor);

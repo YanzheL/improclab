@@ -26,7 +26,7 @@ inline void rgb2yuv(const float *src, int rows, int cols, float **dst_cn) {
   };
   float **src_cn = alloc_2d<float>(3, rows * cols);
   split(src, src_cn, rows, cols);
-  matmul(coef, src_cn, dst_cn, 3, 3, rows * cols); // dst_cn = coef x src_cn
+  mat_mul(coef, src_cn, dst_cn, 3, 3, rows * cols); // dst_cn = coef x src_cn
   delete_2d(src_cn, 3);
 }
 
@@ -45,7 +45,7 @@ inline void yuv2rgb(const float *src, int rows, int cols, float **dst_cn) {
   };
   float **src_cn = alloc_2d<float>(3, rows * cols);
   split(src, src_cn, rows, cols);
-  matmul(coef, src_cn, dst_cn, 3, 3, rows * cols); // dst_cn = coef x src_cn
+  mat_mul(coef, src_cn, dst_cn, 3, 3, rows * cols); // dst_cn = coef x src_cn
   delete_2d(src_cn, 3);
 }
 

@@ -42,13 +42,13 @@ void lab1(std::string path) {
   int cols;
   int n_channels;
   imread(path, img_data, rows, cols, n_channels, false);
-  imshow("Original", img_data, rows, cols, n_channels);
+  imshow("Lab1_Original", img_data, rows, cols, n_channels);
   auto original_rgb_channels = alloc_2d<unsigned char>(3, rows * cols);
   split(img_data, original_rgb_channels, rows, cols);
   // 原始RGB三通道
-  imshow("Original_R", original_rgb_channels[0], rows, cols, 1);
-  imshow("Original_G", original_rgb_channels[1], rows, cols, 1);
-  imshow("Original_B", original_rgb_channels[2], rows, cols, 1);
+  imshow("Lab1_Original_R", original_rgb_channels[0], rows, cols, 1);
+  imshow("Lab1_Original_G", original_rgb_channels[1], rows, cols, 1);
+  imshow("Lab1_Original_B", original_rgb_channels[2], rows, cols, 1);
   // 图像正规化, 映射到0~1范围
   auto regularized_rgb = new float[rows * cols * n_channels];
   regularize(img_data, regularized_rgb, rows * cols * n_channels);
@@ -60,70 +60,70 @@ void lab1(std::string path) {
   // -------------------- RGB转灰度图 --------------------
   rgb2grey(regularized_rgb, rows, cols, *output_channels);
   regularize(*output_channels, recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("GREY", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_GREY", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // -------------------- RGB转YUV --------------------
   rgb2yuv(regularized_rgb, rows, cols, output_channels);
   regularize(output_channels[0], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("YUV_Y", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_YUV_Y", recovered_img, rows, cols, 1);
   regularize(output_channels[1], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("YUV_U", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_YUV_U", recovered_img, rows, cols, 1);
   regularize(output_channels[2], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("YUV_V", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_YUV_V", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // -------------------- YUV转RGB --------------------
   merge(output_channels, merged, rows, cols);
   yuv2rgb(merged, rows, cols, output_channels);
   regularize(output_channels[0], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("YUV_R", recovered_img, rows, cols, 1);
+  imshow("Lab1_YUV_to_RGB_R", recovered_img, rows, cols, 1);
   regularize(output_channels[1], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("YUV_G", recovered_img, rows, cols, 1);
+  imshow("Lab1_YUV_to_RGB_G", recovered_img, rows, cols, 1);
   regularize(output_channels[2], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("YUV_B", recovered_img, rows, cols, 1);
+  imshow("Lab1_YUV_to_RGB_B", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // -------------------- RGB转HSI --------------------
   rgb2hsi(regularized_rgb, rows, cols, output_channels);
   regularize(output_channels[0], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSI_H", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_HSI_H", recovered_img, rows, cols, 1);
   regularize(output_channels[1], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSI_S", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_HSI_S", recovered_img, rows, cols, 1);
   regularize(output_channels[2], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSI_I", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_HSI_I", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // -------------------- HSI转RGB --------------------
   merge(output_channels, merged, rows, cols);
   hsi2rgb(merged, rows, cols, output_channels);
   regularize(output_channels[0], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSI_R", recovered_img, rows, cols, 1);
+  imshow("Lab1_HSI_to_RGB_R", recovered_img, rows, cols, 1);
   regularize(output_channels[1], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSI_G", recovered_img, rows, cols, 1);
+  imshow("Lab1_HSI_to_RGB_G", recovered_img, rows, cols, 1);
   regularize(output_channels[2], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSI_B", recovered_img, rows, cols, 1);
+  imshow("Lab1_HSI_to_RGB_B", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // -------------------- RGB转HSV --------------------
   rgb2hsv(regularized_rgb, rows, cols, output_channels);
   regularize(output_channels[0], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSV_H", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_HSV_H", recovered_img, rows, cols, 1);
   regularize(output_channels[1], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSV_S", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_HSV_S", recovered_img, rows, cols, 1);
   regularize(output_channels[2], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSV_V", recovered_img, rows, cols, 1);
+  imshow("Lab1_RGB_to_HSV_V", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // -------------------- HSV转RGB --------------------
   merge(output_channels, merged, rows, cols);
   hsv2rgb(merged, rows, cols, output_channels);
   regularize(output_channels[0], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSV_R", recovered_img, rows, cols, 1);
+  imshow("Lab1_HSV_to_RGB_R", recovered_img, rows, cols, 1);
   regularize(output_channels[1], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSV_G", recovered_img, rows, cols, 1);
+  imshow("Lab1_HSV_to_RGB_G", recovered_img, rows, cols, 1);
   regularize(output_channels[2], recovered_img, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("HSV_B", recovered_img, rows, cols, 1);
+  imshow("Lab1_HSV_to_RGB_B", recovered_img, rows, cols, 1);
   // -------------------------------------------------
 
   // 释放预分配内存
@@ -141,7 +141,7 @@ void lab2(std::string path) {
   int cols;
   int n_channels;
   imread(path, img_data, rows, cols, n_channels, true);
-  imshow("Original", img_data, rows, cols, n_channels);
+  imshow("Lab2_Original", img_data, rows, cols, n_channels);
 
   // 分配内存
   auto img_res = new unsigned char[rows * cols]; // 存放每次恢复到0~255的单通道数据
@@ -154,7 +154,7 @@ void lab2(std::string path) {
   // 计算原始图像直方图
   histo(img_data, histo_orig, rows * cols);
   // 显示原始直方图
-  plot1d("Original_Histogram", histo_orig, HISTO_LEN);
+  plot1d("Lab2_Original_Histogram", histo_orig, HISTO_LEN);
   // 正规化
   scalar_mul(histo_orig, histo_orig_regu, 1.0 / (rows * cols), HISTO_LEN);
 
@@ -164,12 +164,12 @@ void lab2(std::string path) {
   // 把得到的均衡化后的正规直方图恢复到0～255范围
   scalar_mul(histo_reg_regu, histo_res, rows * cols, HISTO_LEN);
   // 显示均衡化后的直方图
-  plot1d("Equalized_Histogram", histo_res, HISTO_LEN);
+  plot1d("Lab2_Equalized_Histogram", histo_res, HISTO_LEN);
   // 显示均衡化使用的灰度级映射函数
-  plot1d("Equalization_Mapping_Function", trans_map, HISTO_LEN);
+  plot1d("Lab2_Equalization_Mapping_Function", trans_map, HISTO_LEN);
   // 对原图应用灰度级映射函数存到新的图片并显示
   apply_trans(img_data, img_res, trans_map, rows * cols);
-  imshow("Equalization_Result", img_res, rows, cols, 1);
+  imshow("Lab2_Equalization_Result", img_res, rows, cols, 1);
   // -----------------------------------------------
 
   // -------------------- 规定化 --------------------
@@ -181,18 +181,18 @@ void lab2(std::string path) {
   int target_histo[HISTO_LEN];
   scalar_mul(target_regu_histo, target_histo, rows * cols, HISTO_LEN);
   // 显示
-  plot1d("Target_Histogram", target_histo, HISTO_LEN);
+  plot1d("Lab2_Target_Histogram", target_histo, HISTO_LEN);
   // 调用直方图规定化函数
   histo_spec(histo_orig_regu, target_regu_histo, trans_map, histo_reg_regu, HISTO_LEN);
   // 把得到的规定化后的正规直方图恢复到0～255范围
   scalar_mul(histo_reg_regu, histo_res, rows * cols, HISTO_LEN);
   // 显示规定化后的直方图
-  plot1d("Specified_Histogram", histo_res, HISTO_LEN);
+  plot1d("Lab2_Specified_Histogram", histo_res, HISTO_LEN);
   // 显示规定化使用的灰度级映射函数
-  plot1d("Specification_Mapping_Function", trans_map, HISTO_LEN);
+  plot1d("Lab2_Specification_Mapping_Function", trans_map, HISTO_LEN);
   // 对原图应用灰度级映射函数存到新的图片并显示
   apply_trans(img_data, img_res, trans_map, rows * cols);
-  imshow("Specification_Result", img_res, rows, cols, 1);
+  imshow("Lab2_Specification_Result", img_res, rows, cols, 1);
   // -----------------------------------------------
 
   // 释放预分配内存
@@ -206,30 +206,30 @@ void lab3_1(std::string path) {
   int cols;
   int n_channels;
   imread(path, img_data, rows, cols, n_channels, true);
-  imshow("Original", img_data, rows, cols, n_channels);
+  imshow("Lab3_1_Original", img_data, rows, cols, n_channels);
 
   // 分配内存
   auto img_res = new unsigned char[rows * cols];
   // -------------------- 普通中值滤波 --------------------
   GETTIME_HIGH(median_filter_slow(img_data, img_res, rows, cols, 3);, Slow_Median_Filter_3)
-  imshow("Slow_Median_Filter_3x3_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Slow_Median_Filter_3x3_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(median_filter_slow(img_data, img_res, rows, cols, 5);, Slow_Median_Filter_5)
-  imshow("Slow_Median_Filter_5x5_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Slow_Median_Filter_5x5_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(median_filter_slow(img_data, img_res, rows, cols, 7);, Slow_Median_Filter_7)
-  imshow("Slow_Median_Filter_7x7_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Slow_Median_Filter_7x7_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(median_filter_slow(img_data, img_res, rows, cols, 15);, Slow_Median_Filter_15)
-  imshow("Slow_Median_Filter_15x15_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Slow_Median_Filter_15x15_Result", img_res, rows, cols, 1);
   // ----------------------------------------------------
 
   // -------------------- 快速中值滤波 --------------------
   GETTIME_HIGH(median_filter_fast(img_data, img_res, rows, cols, 3);, Fast_Median_Filter_3)
-  imshow("Fast_Median_Filter_3x3_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Fast_Median_Filter_3x3_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(median_filter_fast(img_data, img_res, rows, cols, 5);, Fast_Median_Filter_5)
-  imshow("Fast_Median_Filter_5x5_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Fast_Median_Filter_5x5_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(median_filter_fast(img_data, img_res, rows, cols, 7);, Fast_Median_Filter_7)
-  imshow("Fast_Median_Filter_7x7_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Fast_Median_Filter_7x7_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(median_filter_fast(img_data, img_res, rows, cols, 15);, Fast_Median_Filter_15)
-  imshow("Fast_Median_Filter_15x15_Result", img_res, rows, cols, 1);
+  imshow("Lab3_1_Fast_Median_Filter_15x15_Result", img_res, rows, cols, 1);
   // ----------------------------------------------------
 
   delete[] img_res;
@@ -242,31 +242,31 @@ void lab3_2(std::string path) {
   int cols;
   int n_channels;
   imread(path, img_data, rows, cols, n_channels, true);
-  imshow("Original", img_data, rows, cols, n_channels);
+  imshow("Lab3_2_Original", img_data, rows, cols, n_channels);
 
   // 分配内存
   auto img_res = new unsigned char[rows * cols];
 
   // -------------------- 普通均值滤波 --------------------
   GETTIME_HIGH(mean_filter_slow(img_data, img_res, rows, cols, 3);, Slow_Mean_Filter_3)
-  imshow("Slow_Mean_Filter_3x3_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Slow_Mean_Filter_3x3_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(mean_filter_slow(img_data, img_res, rows, cols, 5);, Slow_Mean_Filter_5)
-  imshow("Slow_Mean_Filter_5x5_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Slow_Mean_Filter_5x5_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(mean_filter_slow(img_data, img_res, rows, cols, 7);, Slow_Mean_Filter_7)
-  imshow("Slow_Mean_Filter_7x7_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Slow_Mean_Filter_7x7_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(mean_filter_slow(img_data, img_res, rows, cols, 15);, Slow_Mean_Filter_15)
-  imshow("Slow_Mean_Filter_15x15_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Slow_Mean_Filter_15x15_Result", img_res, rows, cols, 1);
   // ----------------------------------------------------
 
   // -------------------- 快速均值滤波 --------------------
   GETTIME_HIGH(mean_filter_fast(img_data, img_res, rows, cols, 3);, Fast_Mean_Filter_3)
-  imshow("Fast_Mean_Filter_3x3_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Fast_Mean_Filter_3x3_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(mean_filter_fast(img_data, img_res, rows, cols, 5);, Fast_Mean_Filter_5)
-  imshow("Fast_Mean_Filter_5x5_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Fast_Mean_Filter_5x5_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(mean_filter_fast(img_data, img_res, rows, cols, 7);, Fast_Mean_Filter_7)
-  imshow("Fast_Mean_Filter_7x7_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Fast_Mean_Filter_7x7_Result", img_res, rows, cols, 1);
   GETTIME_HIGH(mean_filter_fast(img_data, img_res, rows, cols, 15);, Fast_Mean_Filter_15)
-  imshow("Fast_Mean_Filter_15x15_Result", img_res, rows, cols, 1);
+  imshow("Lab3_2_Fast_Mean_Filter_15x15_Result", img_res, rows, cols, 1);
   // ----------------------------------------------------
 
   delete[] img_res;
@@ -279,7 +279,7 @@ void lab3_3(std::string path) {
   int cols;
   int n_channels;
   imread(path, img_data, rows, cols, n_channels, true);
-  imshow("Original", img_data, rows, cols, n_channels);
+  imshow("Lab3_3_Original", img_data, rows, cols, n_channels);
 
   // 分配内存
   auto img_regu = new float[rows * cols]; // 存储原图像的float类型数据
@@ -293,19 +293,19 @@ void lab3_3(std::string path) {
   // -------------------- Sobel滤波 --------------------
   sobel_filter(img_regu, img_res, rows, cols);
   regularize(img_res, img_view, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("Sobel_Filter_Result", img_view, rows, cols, 1);
+  imshow("Lab3_3_Sobel_Filter_Result", img_view, rows, cols, 1);
   // ----------------------------------------------------
 
   // -------------------- Roberts滤波 --------------------
   roberts_filter(img_regu, img_res, rows, cols);
   regularize(img_res, img_view, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("Roberts_Filter_Result", img_view, rows, cols, 1);
+  imshow("Lab3_3_Roberts_Filter_Result", img_view, rows, cols, 1);
   // ----------------------------------------------------
 
   // -------------------- Prewitt滤波 --------------------
   prewitt_filter(img_regu, img_res, rows, cols);
   regularize(img_res, img_view, rows * cols, (unsigned char) 0, (unsigned char) 255);
-  imshow("Prewitt_Filter_Result", img_view, rows, cols, 1);
+  imshow("Lab3_3_Prewitt_Filter_Result", img_view, rows, cols, 1);
   // ----------------------------------------------------
 
   delete[] img_res;

@@ -7,10 +7,11 @@
 #define IMPROCLAB_UTIL_H
 
 #include <random>
+#include <initializer_list>
 
-//#define IDX_3D(x, y, z, WIDTH, DEPTH) ((x) + WIDTH * ((y) + DEPTH * (z)))
-#define IDX_2D(i, j, WIDTH) ((i) * WIDTH + (j))
-#define IDX_3D(i, j, k, WIDTH, DEPTH) (IDX_2D(i, j, WIDTH) * DEPTH + k)
+//#define IDX(x, y, z, WIDTH, DEPTH) ((x) + WIDTH * ((y) + DEPTH * (z)))
+//#define IDX_2D(i, j, WIDTH) ((i) * WIDTH + (j))
+//#define IDX_3D(i, j, k, WIDTH, DEPTH) (IDX(i, j, WIDTH) * DEPTH + k)
 #define MIN(x, y) ((x) <= (y) ? (x) : (y))
 #define MAX(x, y) ((x) >= (y) ? (x) : (y))
 #define IS_ZERO(x) (std::fabs(x) <= std::numeric_limits<float>::epsilon())
@@ -94,6 +95,37 @@ inline void print_mat(const T *src, int n) {
   for (int i = 0; i < n; ++i)
     std::cout << src[i] << "\t";
   std::cout << std::endl;
+}
+
+inline constexpr int nd_idx(std::initializer_list<int> shape, std::initializer_list<int> indices) {
+  int res = 0;
+  const auto sbegin = shape.begin();
+  const auto ibegin = indices.begin();
+  for (int dim = 0; dim < shape.size(); ++dim)
+    res += res * sbegin[dim] + ibegin[dim];
+  return res;
+}
+
+/**
+ * 多维索引转一维索引
+ * 使用方法:
+ * 对于2维mxn矩阵, 访问i,j 元素, 使用 IDX(i,j,n)
+ * 对于n维形状为(s1,s2,...,sn)的矩阵, 访问第(e1,e2,...,en)位置的元素, 使用IDX(e1,e2,...,en,s2,s3,...,sn)
+ * @param params
+ * @return 一维索引
+ */
+template<typename ...Args>
+inline constexpr size_t IDX(const Args... params) {
+  constexpr size_t NDIMS = sizeof...(params) / 2 + 1;
+  std::initializer_list<int> args{params...};
+  auto ibegin = args.begin();
+  auto sbegin = ibegin + NDIMS;
+  size_t res = 0;
+  for (int dim = 0; dim < NDIMS; ++dim) {
+    size_t factor = dim > 0 ? sbegin[dim - 1] : 0;
+    res = res * factor + ibegin[dim];
+  }
+  return res;
 }
 
 }

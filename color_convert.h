@@ -62,9 +62,9 @@ inline void rgb2hsi(const float *src, int rows, int cols, float **dst_cn) {
   float *ic = dst_cn[2];
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      float r = src[IDX_3D(i, j, 0, cols, 3)];
-      float g = src[IDX_3D(i, j, 1, cols, 3)];
-      float b = src[IDX_3D(i, j, 2, cols, 3)];
+      float r = src[IDX(i, j, 0, cols, 3)];
+      float g = src[IDX(i, j, 1, cols, 3)];
+      float b = src[IDX(i, j, 2, cols, 3)];
       const float mean = (r + g + b) / 3;
       float h = 0, s = 0;
       if (IS_ZERO(mean)) {
@@ -85,9 +85,9 @@ inline void rgb2hsi(const float *src, int rows, int cols, float **dst_cn) {
         s = 0;
       h = ROUND_TO_ZERO(h);
       assert(h >= 0 && h < 2 * PI);
-      hc[IDX_2D(i, j, cols)] = h;
-      sc[IDX_2D(i, j, cols)] = s;
-      ic[IDX_2D(i, j, cols)] = mean;
+      hc[IDX(i, j, cols)] = h;
+      sc[IDX(i, j, cols)] = s;
+      ic[IDX(i, j, cols)] = mean;
     }
   }
 }
@@ -105,9 +105,9 @@ inline void hsi2rgb(const float *src, int rows, int cols, float **dst_cn) {
   float *bc = dst_cn[2];
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      float h = src[IDX_3D(i, j, 0, cols, 3)];
-      float s = src[IDX_3D(i, j, 1, cols, 3)];
-      const float mean = src[IDX_3D(i, j, 2, cols, 3)];
+      float h = src[IDX(i, j, 0, cols, 3)];
+      float s = src[IDX(i, j, 1, cols, 3)];
+      const float mean = src[IDX(i, j, 2, cols, 3)];
       assert(h >= 0 && h <= 2 * PI);
       float r, g, b;
       if (h >= 0 && h < 2 * PI / 3) {
@@ -123,9 +123,9 @@ inline void hsi2rgb(const float *src, int rows, int cols, float **dst_cn) {
         b = mean * (1 + (s * cos(h - 4 * PI / 3)) / cos(5 * PI / 3 - h));
         r = 3 * mean - (b + g);
       }
-      rc[IDX_2D(i, j, cols)] = r;
-      bc[IDX_2D(i, j, cols)] = b;
-      gc[IDX_2D(i, j, cols)] = g;
+      rc[IDX(i, j, cols)] = r;
+      bc[IDX(i, j, cols)] = b;
+      gc[IDX(i, j, cols)] = g;
     }
   }
 }
@@ -143,9 +143,9 @@ inline void rgb2hsv(const float *src, int rows, int cols, float **dst_cn) {
   float *vc = dst_cn[2];
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      const float r = src[IDX_3D(i, j, 0, cols, 3)];
-      const float g = src[IDX_3D(i, j, 1, cols, 3)];
-      const float b = src[IDX_3D(i, j, 2, cols, 3)];
+      const float r = src[IDX(i, j, 0, cols, 3)];
+      const float g = src[IDX(i, j, 1, cols, 3)];
+      const float b = src[IDX(i, j, 2, cols, 3)];
       const float max_val = MAX(r, MAX(g, b));
       const float min_val = MIN(r, MIN(g, b));
       const float delta = max_val - min_val;
@@ -165,9 +165,9 @@ inline void rgb2hsv(const float *src, int rows, int cols, float **dst_cn) {
         h = fmod(h, 6);
       h /= 6;
       float s = IS_ZERO(v) ? 0 : delta / v;
-      hc[IDX_2D(i, j, cols)] = h;
-      sc[IDX_2D(i, j, cols)] = s;
-      vc[IDX_2D(i, j, cols)] = v;
+      hc[IDX(i, j, cols)] = h;
+      sc[IDX(i, j, cols)] = s;
+      vc[IDX(i, j, cols)] = v;
     }
   }
 }
@@ -185,9 +185,9 @@ inline void hsv2rgb(const float *src, int rows, int cols, float **dst_cn) {
   float *bc = dst_cn[2];
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      const float h = src[IDX_3D(i, j, 0, cols, 3)];
-      const float s = src[IDX_3D(i, j, 1, cols, 3)];
-      const float v = src[IDX_3D(i, j, 2, cols, 3)];
+      const float h = src[IDX(i, j, 0, cols, 3)];
+      const float s = src[IDX(i, j, 1, cols, 3)];
+      const float v = src[IDX(i, j, 2, cols, 3)];
       const float h_ = 6 * h;
       const float x = v * (1 - s);
       const float y = v * (1 - s * (h_ - (int) h_));
@@ -220,9 +220,9 @@ inline void hsv2rgb(const float *src, int rows, int cols, float **dst_cn) {
           break;
         default:std::cerr << "ERROR" << std::endl;
       }
-      rc[IDX_2D(i, j, cols)] = r;
-      bc[IDX_2D(i, j, cols)] = b;
-      gc[IDX_2D(i, j, cols)] = g;
+      rc[IDX(i, j, cols)] = r;
+      bc[IDX(i, j, cols)] = b;
+      gc[IDX(i, j, cols)] = g;
     }
   }
 }

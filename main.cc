@@ -202,7 +202,7 @@ int main() {
 //  test_histo_equa();
 //  test_histo_spec();
 //  lab1();
-  lab2();
+//  lab2();
 //  waitKey(0);
   return 0;
 }

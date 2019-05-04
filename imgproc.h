@@ -56,7 +56,7 @@ inline void split(const T *src, T **dst, int rows, int cols) {
   for (int i = 0; i < rows; ++i)
     for (int j = 0; j < cols; ++j)
       for (int k = 0; k < 3; ++k)
-        dst[k][IDX_2D(i, j, cols)] = src[IDX_3D(i, j, k, cols, 3)];
+        dst[k][IDX(i, j, cols)] = src[IDX(i, j, k, cols, 3)];
 }
 
 /**
@@ -71,7 +71,7 @@ inline void merge(T **src, T *dst, int rows, int cols) {
   for (int i = 0; i < rows; ++i)
     for (int j = 0; j < cols; ++j)
       for (int k = 0; k < 3; ++k)
-        dst[IDX_3D(i, j, k, cols, 3)] = src[k][IDX_2D(i, j, cols)];
+        dst[IDX(i, j, k, cols, 3)] = src[k][IDX(i, j, cols)];
 }
 
 /**

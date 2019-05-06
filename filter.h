@@ -42,7 +42,7 @@ inline T median_slow(const T *src, int n) {
 }
 
 /**
- * 普通排序方法求平均值
+ * 普通方法求平均值
  */
 template<typename T>
 inline T mean_slow(const T *src, int n) {
@@ -103,7 +103,7 @@ inline void median_filter_slow(const T *src, T *dst, int rows, int cols, int k_s
 }
 
 /**
- * 快速中值滤波
+ * 快速中值滤波, 采用S型行走路线
  * @param src 输入图像
  * @param dst 输出图像
  * @param rows 图像列数
@@ -178,7 +178,7 @@ inline void mean_filter_slow(const T *src, T *dst, int rows, int cols, int k_siz
 }
 
 /**
- * 快速均值滤波
+ * 快速均值滤波, 采用S型行走路线
  * @param src 输入图像
  * @param dst 输出图像
  * @param rows 图像列数

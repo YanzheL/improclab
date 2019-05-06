@@ -15,12 +15,12 @@
 namespace lyz {
 
 /**
- * 从src矩阵中按照给定的核提取出数据存入dst
+ * 从src矩阵中提取出和模板对应的数据存入dst
  * @param src 源矩阵
  * @param dst 输出矩阵
  * @param cols 源矩阵列数
- * @param k_rows 核行数
- * @param k_cols 核列数
+ * @param k_rows 模板行数
+ * @param k_cols 模板列数
  * @param r 当前核左上角在源矩阵中的行坐标
  * @param c 当前核左上角在源矩阵中的列坐标
  */

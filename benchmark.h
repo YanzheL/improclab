@@ -10,7 +10,7 @@
 #include <type_traits>
 #include <chrono>
 
-#define GETTIME_HIGH(X, MSG)                                                     \
+#define GETTIME_HIGH(X, MSG)                                                      \
 {                                                                                 \
   auto t_start = std::chrono::high_resolution_clock::now();                       \
   { X }                                                                           \

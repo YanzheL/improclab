@@ -78,4 +78,4 @@ Its definition requires some features of C++ 14. If C++ 14 is not available in y
 
 `IDX(x,y,z,w,d)` can be replaced by `IDX_3D(x,y,z,w,d)`
 
-Now this project is C++ 11 compatiable!
+Now this project is C++ 11 compatible!

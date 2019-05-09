@@ -68,7 +68,7 @@ You cannot run the demo if no IO module presents. But you may still integrate th
 
 Just remove `main.cc`, `io.cc`, `io.h`, and have fun. At this time, no OpenCV required.
 
-#### Compiling with C++ standard < 14
+#### Compiling With C++ Standard < 14
 
 The utility function `IDX(...)` in `util.h` is a black magic that uses variadic template pack. It converts multi-demensional indices to 1D(linear) indice in a general way. To understand its use case, you can see [My answer at StackOverflow](https://stackoverflow.com/a/55981266/11211417).
 

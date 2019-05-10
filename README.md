@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is my course project for Image Processing at HIT.
+This is my course project for ***Image Processing*** at HIT.
 
 In this project, I implemented the following common image-processing procedures.
 

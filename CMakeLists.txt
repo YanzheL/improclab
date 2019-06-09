@@ -4,8 +4,6 @@ project(improclab)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS "-fstandalone-debug")
-
 find_package(OpenCV REQUIRED)
 
 message(STATUS ${OpenCV_INCLUDE_DIRS})
@@ -24,4 +22,5 @@ add_executable(
         benchmark.h
 )
 
-target_link_libraries(improclab ${OpenCV_LIBRARIES})
+#target_link_libraries(improclab ${OpenCV_LIBRARIES})
+target_link_libraries(improclab opencv_world)

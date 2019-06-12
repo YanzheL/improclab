@@ -168,3 +168,5 @@ dkms.conf
 *.iml
 out
 gen
+# Project exclude paths
+/cmake-*-debug/
